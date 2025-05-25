@@ -46,8 +46,8 @@ function signin(req, res) {
                 console.log(search);
                 const token = jsonwebtoken_1.default.sign(JSON.stringify({ email: search.email }), jwtSecret);
                 const signedIn = jsonwebtoken_1.default.sign(JSON.stringify({ state: true }), jwtSecret);
-                res.cookie('status', signedIn,{ httpOnly: true, secure: true, sameSite: 'None', path: '/' });
-                res.cookie('token', token,{ httpOnly: true, secure: true, sameSite: 'None', path: '/' });
+                res.cookie('status', signedIn,{  secure: true, sameSite: 'None', path: '/' });
+                res.cookie('token', token,{  secure: true, sameSite: 'None', path: '/' });
                 res.status(200).send('Login Success');
             }
         }
