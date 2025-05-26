@@ -14,7 +14,7 @@ const auth_1 = require("./middlewares/auth");
 const signout_1 = require("./routes/signout");
 const app = (0, express_1.default)();
 app.use((0, cookie_parser_1.default)());
-app.use((0, cors_1.default)({ origin: 'https://finance-ai-fe.vercel.app', credentials: true }));
+app.use((0, cors_1.default)({ origin: 'https://app.summarizer.shop', credentials: true }));
 app.use(express_1.default.json({ limit: '10mb' }));
 //agent endpoints
 app.post('/signin', signin_1.signin);
