@@ -20,7 +20,7 @@ function signout(req, res) {
    httpOnly:false
 });
 res.clearCookie('status', {
-  path: 'https://app.summarizer.shop',
+  path: '/',
   domain: '.summarizer.shop',
   secure: true,
   sameSite: 'none'
