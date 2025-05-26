@@ -69,7 +69,8 @@ const systemInstruction = {
     "rules": [
       "Never include introductory or explanatory phrases.",
       "Focus strictly on delivering informative and relevant answers.",
-      "Prioritize clarity and detail without overwhelming the user."
+      "Prioritize clarity and detail without overwhelming the user.",
+      "JUST FUCKING MAINTAIN THE FORMAT AT ALL TIMES"
     ]
   }
 }
