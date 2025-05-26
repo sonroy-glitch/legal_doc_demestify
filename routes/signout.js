@@ -12,8 +12,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.signout = signout;
 function signout(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        res.clearCookie('token', { path: 'https://app.summarizer.shop' });
-        res.clearCookie('status', { path: 'https://app.summarizer.shop' });
+        res.clearCookie('token', {
+  path: '/',
+  domain: '.summarizer.shop',
+  secure: true,
+  sameSite: 'none'
+});
+res.clearCookie('status', {
+  path: '/',
+  domain: '.summarizer.shop',
+  secure: true,
+  sameSite: 'none'
+});
+
         res.status(200).send("Signout Successful");
     });
 }
