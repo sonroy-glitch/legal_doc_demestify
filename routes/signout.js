@@ -13,7 +13,7 @@ exports.signout = signout;
 function signout(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         res.clearCookie('token', {
-  path: 'https://app.summarizer.shop',
+  path: '/',
   domain: '.summarizer.shop',
   secure: true,
   sameSite: 'none',
