@@ -38,16 +38,16 @@ function signin(req, res) {
                 });
                 const token = jsonwebtoken_1.default.sign(JSON.stringify({ email: body.email }), jwtSecret);
                 const signedIn = jsonwebtoken_1.default.sign(JSON.stringify({ state: true }), jwtSecret);
-                res.cookie('status', signedIn);
-                res.cookie('token', token);
+                res.cookie('status', signedIn,{  domain:'summarizer.shop',httpOnly:false, secure: true, sameSite: 'none'});
+                res.cookie('token', token,{  domain:'summarizer.shop',httpOnly:false, secure: true, sameSite: 'none'});
                 res.status(200).send('Login Success');
             }
             else {
                 console.log(search);
                 const token = jsonwebtoken_1.default.sign(JSON.stringify({ email: search.email }), jwtSecret);
                 const signedIn = jsonwebtoken_1.default.sign(JSON.stringify({ state: true }), jwtSecret);
-                res.cookie('status', signedIn,{  domain:'vercel.app',httpOnly:false, secure: true, sameSite: 'none'});
-                res.cookie('token', token,{ domain:'vercel.app',httpOnly:false, secure: true, sameSite: 'none' });
+                res.cookie('status', signedIn,{  domain:'summarizer.shop',httpOnly:false, secure: true, sameSite: 'none'});
+                res.cookie('token', token,{ domain:'summarizer.shop',httpOnly:false, secure: true, sameSite: 'none' });
                 res.status(200).send('Login Success');
             }
         }
