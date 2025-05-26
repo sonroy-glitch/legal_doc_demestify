@@ -13,13 +13,13 @@ exports.signout = signout;
 function signout(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         res.clearCookie('token', {
-  path: '/',
+  path: 'https://app.summarizer.shop',
   domain: '.summarizer.shop',
   secure: true,
   sameSite: 'none'
 });
 res.clearCookie('status', {
-  path: '/',
+  path: 'https://app.summarizer.shop',
   domain: '.summarizer.shop',
   secure: true,
   sameSite: 'none'
