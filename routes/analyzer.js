@@ -1,4 +1,5 @@
 "use strict";
+
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,21 +9,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.analyzer = analyzer;
 
-const generative_ai_1 = require("@google/generative-ai");
-const genAI = new generative_ai_1.GoogleGenerativeAI(process.env.AI_KEY);
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const genAI = new GoogleGenerativeAI(process.env.AI_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-const core_1 = require("@tavily/core");
-const client = (0, core_1.tavily)({ apiKey: process.env.TAVILY_KEY });
+const { tavily } = require("@tavily/core");
+const client = tavily({ apiKey: process.env.TAVILY_KEY });
 
-const ioredis_1 = __importDefault(require("ioredis"));
-const redis = new ioredis_1.default(process.env.REDIS_KEY);
+const Redis = __importDefault(require("ioredis"));
+const redis = new Redis.default(process.env.REDIS_KEY);
 
 const systemInstruction = {
     role: 'user',
@@ -76,6 +79,26 @@ const systemInstruction = {
     }]
 };
 
+/**
+ * Clean AI output and parse JSON safely
+ */
+function safeParseAIResponse(raw) {
+    if (!raw) throw new Error("Empty AI response");
+
+    // Remove markdown fences and extra quotes
+    const cleaned = raw
+        .replace(/```json|```/g, "")
+        .replace(/^"|"$/g, "")
+        .trim();
+
+    try {
+        return JSON.parse(cleaned);
+    } catch (err) {
+        console.error("JSON parse error:", err.message, "\nRaw AI output:", raw);
+        throw new Error("Invalid AI response format");
+    }
+}
+
 function caller(query) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log("Caller started...");
@@ -92,31 +115,30 @@ function caller(query) {
             const rawResponse = out.response.text();
             console.log("Raw AI Response:", rawResponse);
 
-            const trimmed = rawResponse.slice(7, rawResponse.length - 3);
-            let data;
-            try {
-                data = JSON.parse(trimmed);
-            } catch (err) {
-                console.error("JSON parse error:", err, "AI returned:", trimmed);
-                throw new Error("Invalid AI response format");
-            }
+            let data = safeParseAIResponse(rawResponse);
 
-            if (data) {
-                if (data.type === 'final') {
-                    end = data.end;
-                    history.push(data);
-                    return data.data;
-                } else if (data.type === 'search') {
+            if (data.type === 'final') {
+                end = data.end;
+                history.push(data);
+                return data.data;
+            } 
+            else if (data.type === 'search') {
+                try {
                     const answer = yield client.search(`${data.question}`, {
                         topic: "finance",
                         includeImages: true,
                         includeImageDescriptions: true
                     });
+                    console.log("Tavily search result:", answer);
                     history.push(answer);
+                } catch (err) {
+                    console.error("Tavily search error:", err.message);
+                    throw new Error("Search service failed");
                 }
-            } else {
-                console.warn("No data returned from AI");
-                return true;
+            } 
+            else {
+                console.warn("Unexpected AI response type:", data);
+                throw new Error("Unexpected AI response structure");
             }
         }
     });
@@ -136,13 +158,20 @@ function analyzer(req, res) {
 
         try {
             console.log("Analyzer started for user:", userId);
+
             const out = yield caller(JSON.stringify(body));
             console.log("Caller output:", out);
 
-            yield redis.set(userId, JSON.stringify(body.data), 'EX', 86400);
-            console.log(`Data stored in Redis for user ${userId}`);
+            try {
+                yield redis.set(userId, JSON.stringify(body.data), 'EX', 86400);
+                console.log(`Data stored in Redis for user ${userId}`);
+            } catch (err) {
+                console.error("Redis error:", err.message);
+                // Continue even if Redis fails
+            }
 
             return res.json({ data: out });
+
         } catch (error) {
             console.error("Analyzer error:", error);
             return res.status(500).json({ error: error.message || "Internal Server Error" });
