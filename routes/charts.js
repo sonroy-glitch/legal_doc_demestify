@@ -15,11 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.charts = charts;
 const ioredis_1 = __importDefault(require("ioredis"));
 const generative_ai_1 = require("@google/generative-ai");
-const genAI = new generative_ai_1.GoogleGenerativeAI('AIzaSyCyRk4a7w7iJ5Iz2RjHYCDEAPu40_-iYQQ');
+const genAI = new generative_ai_1.GoogleGenerativeAI(process.env.AI_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 const core_1 = require("@tavily/core");
 const client = (0, core_1.tavily)({ apiKey: process.env.TAVILY_KEY });
-const redis = new ioredis_1.default('rediss://default:Abp_AAIjcDE0MjQ5YjBiM2NkMzA0OWM4OWVlNTAyYTQ0YzA2YmQzZXAxMA@delicate-grub-47743.upstash.io:6379');
+const redis = new ioredis_1.default(process.env.REDIS_KEY);
 const systemInstruction = {
     role: 'user',
     parts: [{
