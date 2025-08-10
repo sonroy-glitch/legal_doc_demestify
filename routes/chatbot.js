@@ -17,10 +17,10 @@ const { tavily } = require("@tavily/core");
 });
 
 // ✅ Initialize services
-const genAI = new GoogleGenerativeAI('AIzaSyCyRk4a7w7iJ5Iz2RjHYCDEAPu40_-iYQQ');
+const genAI = new GoogleGenerativeAI(process.env.AI_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 const client = tavily({ apiKey: process.env.TAVILY_KEY });
-const redis = new ioredis_1.default('rediss://default:Abp_AAIjcDE0MjQ5YjBiM2NkMzA0OWM4OWVlNTAyYTQ0YzA2YmQzZXAxMA@delicate-grub-47743.upstash.io:6379');
+const redis = new ioredis_1.default(process.env.REDIS_KEY);
 
 // ✅ System instruction object
 const systemInstruction = {
