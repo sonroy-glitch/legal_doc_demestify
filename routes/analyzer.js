@@ -18,14 +18,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.analyzer = analyzer;
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY); // Use env var for safety
+const genAI = new GoogleGenerativeAI('AIzaSyCyRk4a7w7iJ5Iz2RjHYCDEAPu40_-iYQQ'); // Use env var for safety
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 const { tavily } = require("@tavily/core");
-const client = tavily({ apiKey: process.env.TAVILY_API_KEY }); // Use env var
+const client = tavily({ apiKey: "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" }); // Use env var
 
 const Redis = __importDefault(require("ioredis"));
-const redis = new Redis.default(process.env.UPSTASH_REDIS_URL); // Use env var
+const redis = new Redis.default("rediss://default:Abp_AAIjcDE0MjQ5YjBiM2NkMzA0OWM4OWVlNTAyYTQ0YzA2YmQzZXAxMA@delicate-grub-47743.upstash.io:6379"); // Use env var
 
 // ---- SYSTEM INSTRUCTION ----
 const systemInstruction = {
