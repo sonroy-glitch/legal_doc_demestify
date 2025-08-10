@@ -58,38 +58,30 @@ REDIS_URL=redis://localhost:6379
 MONGO_URI=your_mongodb_connection
 TAVILY_API_KEY=your_tavily_api_key
 ```
-### Dependencies
-{
-  "name": "agent",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "@google/generative-ai": "^0.24.1",
-    "@prisma/client": "^6.8.2",
-    "@tavily/core": "^0.5.2",
-    "@types/cookie-parser": "^1.4.8",
-    "@types/cors": "^2.8.18",
-    "@types/express": "^5.0.1",
-    "@types/ioredis": "^5.0.0",
-    "@types/jsonwebtoken": "^9.0.9",
-    "@types/pdf-parse": "^1.1.5",
-    "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "fs": "^0.0.1-security",
-    "ioredis": "^5.6.1",
-    "jsonwebtoken": "^9.0.2",
-    "pdf-parse": "^1.1.1",
-    "prisma": "^6.8.2",
-    "typescipt": "^1.0.0",
-    "typescript": "^5.8.3",
-    "zod": "^3.25.28"
-  }
-}
+## 📦 Dependencies
+
+### Runtime dependencies
+- `@google/generative-ai` ^0.24.1
+- `langragph`
+- `@prisma/client` ^6.8.2
+- `@tavily/core` ^0.5.2
+- `cookie-parser` ^1.4.7
+- `cors` ^2.8.5
+- `express` ^5.1.0
+- `fs` ^0.0.1-security
+- `ioredis` ^5.6.1
+- `jsonwebtoken` ^9.0.2
+- `pdf-parse` ^1.1.1
+- `prisma` ^6.8.2
+- `typescript` ^5.8.3
+- `zod` ^3.25.28
+
+### Development / TypeScript types
+- `@types/cookie-parser` ^1.4.8
+- `@types/cors` ^2.8.18
+- `@types/express` ^5.0.1
+- `@types/ioredis` ^5.0.0
+- `@types/jsonwebtoken` ^9.0.9
+- `@types/pdf-parse` ^1.1.5
+- `typescipt` ^1.0.0 *(note: likely a typo, maybe `typescript`)*
+
