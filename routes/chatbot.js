@@ -9,20 +9,20 @@ const ioredis_1 = __importDefault(require("ioredis"));
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { tavily } = require("@tavily/core");
 
-// ✅ Environment variable checks
+
 ["AI_KEY", "TAVILY_KEY", "REDIS_KEY"].forEach(key => {
     if (!process.env[key]) {
         console.error(`❌ Missing environment variable: ${key}`);
     }
 });
 
-// ✅ Initialize services
+
 const genAI = new GoogleGenerativeAI(process.env.AI_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 const client = tavily({ apiKey: process.env.TAVILY_KEY });
 const redis = new ioredis_1.default(process.env.REDIS_KEY);
 
-// ✅ System instruction object
+
 const systemInstruction = {
     role: 'user',
     parts: [{
@@ -69,6 +69,7 @@ const systemInstruction = {
       "Focus strictly on delivering informative and relevant answers.",
       "Prioritize clarity and detail without overwhelming the user.",
       "JUST FUCKING MAINTAIN THE FORMAT AT ALL TIMES"
+      "Answer Questions only related to the document."
     ]
   }
 }
@@ -76,7 +77,7 @@ const systemInstruction = {
     }]
 };
 
-// ✅ Safer AI call function
+
 async function caller(query) {
     let end = true;
     let history = [];
@@ -99,11 +100,11 @@ async function caller(query) {
             try {
                 data = JSON.parse(cleaned);
             } catch (err) {
-                console.error("❌ JSON Parse Error:", err);
+                console.error("JSON Parse Error:", err);
                 throw new Error("AI returned invalid JSON format");
             }
 
-            console.log("✅ Parsed Data:", data);
+            console.log(" Parsed Data:", data);
 
             if (data.type === 'final') {
                 end = data.end;
@@ -128,7 +129,7 @@ async function caller(query) {
     }
 }
 
-// ✅ Main chatbot API handler
+
 function chatbot(req, res) {
     (async () => {
         try {
