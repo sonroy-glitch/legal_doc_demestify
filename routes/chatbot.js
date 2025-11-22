@@ -12,7 +12,7 @@ const { tavily } = require("@tavily/core");
 
 ["AI_KEY", "TAVILY_KEY", "REDIS_KEY"].forEach(key => {
     if (!process.env[key]) {
-        console.error(`❌ Missing environment variable: ${key}`);
+        console.error(` Missing environment variable: ${key}`);
     }
 });
 
@@ -69,7 +69,7 @@ const systemInstruction = {
       "Focus strictly on delivering informative and relevant answers.",
       "Prioritize clarity and detail without overwhelming the user.",
       "JUST FUCKING MAINTAIN THE FORMAT AT ALL TIMES"
-      "Answer Questions only related to the document."
+      "Answer Questions only related to the document or finance stuff."
     ]
   }
 }
